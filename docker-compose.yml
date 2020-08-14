@@ -1,0 +1,96 @@
+version: "2"
+services:
+
+  atlas-server:
+    build: ./atlas
+    image: wbaa/rokku-dev-apache-atlas
+    volumes:
+      - ./atlas/resources/1000-Hadoop:/opt/atlas/models/1000-Hadoop
+    ports:
+      - "21000:21000"
+    depends_on:
+      - "zookeeper"
+      - "kafka" 
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    hostname: zookeeper
+    ports:
+      - "2181:2181"  
+
+  kafka:
+    container_name: kafka
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    hostname: kafka
+    environment:
+      KAFKA_CREATE_TOPICS: "create_events:1:1,delete_events:1:1,ATLAS_HOOK:1:1"
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper  
+  
+  spark:
+    build: ./spark
+    command: /bin/bash
+    tty: true
+    volumes:
+      - ./spark/atlas-application.properties:/usr/local/spark/conf/atlas-application.properties
+      - ./spark/users-credentials.properties:/usr/local/spark/users-credentials.properties
+      - ./spark/spark-atlas-connector-assembly-0.1.0-SNAPSHOT.jar:/usr/local/spark/jars/spark-atlas-connector-assembly-0.1.0-SNAPSHOT.jar
+      - ./spark/spark-defaults.conf:/usr/local/spark/conf/spark-defaults.conf
+      - ./spark/teste.py:/tmp/teste.py
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
+    volumes:
+      - ./namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+    env_file:
+      - ./hive/hadoop-hive.env
+    ports:
+      - "50070:50070"
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+    volumes:
+      - ./datanode:/hadoop/dfs/data
+    env_file:
+      - ./hive/hadoop-hive.env
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070"
+    ports:
+      - "50075:50075"
+  
+  hive-server:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    env_file:
+      - ./hive/hadoop-hive.env
+    volumes:
+      - ./hive/atlas-application.properties:/opt/hive/conf/atlas-application.properties
+      - ./hive/hive-site.xml:/opt/hive/conf/hive-site.xml
+      - ./hive/hive-env.sh:/opt/hive/conf/hive-env.sh
+      - ./hive/atlas-hive-hook:/opt/atlas-hive-hook
+    environment:
+      HIVE_CORE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://hive-metastore/metastore"
+      SERVICE_PRECONDITION: "hive-metastore:9083"
+    ports:
+      - "10000:10000"
+
+  hive-metastore:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    env_file:
+      - ./hive/hadoop-hive.env
+    command: /opt/hive/bin/hive --service metastore
+    environment:
+      SERVICE_PRECONDITION: "namenode:50070 datanode:50075 hive-metastore-postgresql:5432"
+    ports:
+      - "9083:9083"
+
+  hive-metastore-postgresql:
+    image: bde2020/hive-metastore-postgresql:2.3.0
+  
+

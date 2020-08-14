@@ -1,0 +1,22 @@
+{
+  "classificationDefs": [
+    {
+      "category": "CLASSIFICATION",
+      "name": "customer_PII",
+      "description": "Used for classifying a data which contains customer personal information, hence indicating confidential private",
+      "typeVersion": "1.0",
+      "attributeDefs": [],
+      "superTypes": []
+    },
+    {
+      "category": "CLASSIFICATION",
+      "name": "customer_NON_PII",
+      "description": "Used for classifying a data which contains customer non personal information, hence indicating confidential lesser than private",
+      "typeVersion": "1.0",
+      "attributeDefs": [],
+      "superTypes": []
+    }
+  ],
+  "structDefs": [],
+  "entityDefs" : []
+}

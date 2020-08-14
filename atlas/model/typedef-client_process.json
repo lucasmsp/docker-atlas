@@ -1,0 +1,58 @@
+{
+  "entityDefs": [
+    {
+      "superTypes": [
+        "Process"
+      ],
+      "category": "ENTITY",
+      "name": "lucasmsp",
+      "description": "a type definition for AWS tools",
+      "typeVersion": "1.1",
+      "attributeDefs": [
+        {
+          "name": "operation",
+          "typeName": "string",
+          "isOptional": true,
+          "cardinality": "SINGLE",
+          "valuesMinCount": 1,
+          "valuesMaxCount": 1,
+          "isUnique": false,
+          "isIndexable": false
+        },
+        {
+          "name": "run_as",
+          "typeName": "string",
+          "isOptional": false,
+          "cardinality": "SINGLE",
+          "valuesMinCount": 1,
+          "valuesMaxCount": 1,
+          "isUnique": false,
+          "isIndexable": true
+        }
+      ]
+    }
+  ],
+  "relationshipDefs": [
+    {
+      "name": "lucasmsp_server",
+      "typeVersion": "1.0",
+      "relationshipCategory": "ASSOCIATION",
+      "relationshipLabel": "__lucasmsp.server",
+      "endDef1": {
+        "type": "server",
+        "name": "clients",
+        "isContainer": false,
+        "cardinality": "SET",
+        "isLegacyAttribute": true
+      },
+      "endDef2": {
+        "type": "lucasmsp",
+        "name": "server",
+        "isContainer": false,
+        "cardinality": "SINGLE",
+        "isLegacyAttribute": true
+      },
+      "propagateTags": "NONE"
+    }
+  ]
+}

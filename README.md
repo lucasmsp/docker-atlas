@@ -15,16 +15,17 @@ This cluster in docker contains Apache Atlas (and its dependencies) with a minim
 
 1. run `docker-compose build` to build this all docker image or
 2. run `docker-compose up` to start all cluster services (it may take some time).
-3. Access Atlas server using admin user and password
+3. wait the above message or Server: Apache Atlas or verify that server is up and running using `curl -u admin:admin http://localhost:21000/api/atlas/admin/version`
 
 ```
-http://localhost:21000
+atlas-server_1 | Apache Atlas Server started!!!
+atlas-server_1 | 
+atlas-server_1 | waiting for atlas to be ready
+atlas-server_1 | .....
+atlas-server_1 | Server: Apache Atlas
 ```
 
-Or verify that server is up and running using
-```
-curl -u admin:admin http://localhost:21000/api/atlas/admin/version
-```
+4. Access Atlas server (`http://localhost:21000`) using user *admin* and password *admin*
 
 
 #### Testing Hive

@@ -44,6 +44,24 @@ Load data into Hive:
   > LOAD DATA LOCAL INPATH '/opt/hive/examples/files/kv1.txt' OVERWRITE INTO TABLE pokes;
 ```
 
+or 
+
+
+```
+create table brancha(full_name string, ssn string, location string);
+create table branchb(full_name string, ssn string, location string);
+insert into brancha(full_name,ssn,location) values ('ryan', '111-222-333', 'chicago'); 
+insert into brancha(full_name,ssn,location) values ('brad', '444-555-666', 'minneapolis'); 
+insert into brancha(full_name,ssn,location) values ('rupert', '000-000-000', 'chicago'); 
+insert into brancha(full_name,ssn,location) values ('john', '555-111-555', 'boston');
+insert into branchb(full_name,ssn,location) values ('jane', '666-777-888', 'dallas'); 
+insert into branchb(full_name,ssn,location) values ('andrew', '999-999-999', 'tampa'); 
+insert into branchb(full_name,ssn,location) values ('ryan', '111-222-333', 'chicago'); 
+insert into branchb(full_name,ssn,location) values ('brad', '444-555-666', 'minneapolis');
+create table branch_intersect as select b1.full_name,b1.ssn,b1.location from brancha b1 inner join branchb b2 ON b1.ssn = b2.ssn;
+
+```
+
 #### Testing Spark
 
 To run some code in Spark:

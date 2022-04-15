@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as base
+FROM ubuntu:21.04 as base
 
 LABEL maintainer="Lucas Miguel Ponce <lucasmsp@dcc.ufmg.br>"
 
@@ -11,7 +11,7 @@ ENV TERM=xterm\
     TZ=America/Sao_Paulo\
     DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+RUN apt update && apt install -y \
       python3 \
       python3-pip \
       python3-dev \
@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
       curl \
       graphviz \
       locales \
-  && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 10 \
   && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
   && locale-gen \
   && update-locale LANG=en_US.UTF-8 \

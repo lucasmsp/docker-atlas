@@ -1,4 +1,4 @@
-FROM ubuntu:21.04 as base
+FROM ubuntu:22.04 as base
 
 LABEL maintainer="Lucas Miguel Ponce <lucasmsp@dcc.ufmg.br>"
 
@@ -29,8 +29,8 @@ RUN apt update && apt install -y \
   && echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale \
   && rm -rf /var/lib/apt/lists/*
 
-ENV SPARK_VERSION=2.4
-ENV HADOOP_VERSION=2.7
+ENV SPARK_VERSION=3.2
+ENV HADOOP_VERSION=3.2
 ENV SPARK_BASE_URL=http://www.apache.org/dist/spark
 
 # Get latest spark based on major.minor version

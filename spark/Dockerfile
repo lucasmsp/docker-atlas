@@ -29,9 +29,9 @@ RUN apt update && apt install -y \
   && echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale \
   && rm -rf /var/lib/apt/lists/*
 
-ENV SPARK_VERSION=3.2
-ENV HADOOP_VERSION=3.2
-ENV SPARK_BASE_URL=http://www.apache.org/dist/spark
+ENV SPARK_VERSION=3.3
+ENV HADOOP_VERSION=3
+ENV SPARK_BASE_URL=https://downloads.apache.org/spark/
 
 # Get latest spark based on major.minor version
 RUN SPARK_LATEST_VERSION=$(\

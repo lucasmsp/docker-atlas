@@ -1,6 +1,6 @@
 FROM maven:3.5.4-jdk-8 AS stage-atlas
 
-ENV	MAVEN_OPTS "-Xms2g -Xmx2g"
+ENV	MAVEN_OPTS "-Xms2g -Xmx2g -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true"
 ENV ATLAS_REV "21b15842fd74bc91910b2d8901dbea57769065d0"
 
 RUN git clone http://github.com/apache/atlas.git \
@@ -14,7 +14,9 @@ FROM centos:7
 COPY --from=stage-atlas /apache-atlas.tar.gz /apache-atlas.tar.gz
 
 RUN yum update -y \
-	&& yum install -y python python36 java-1.8.0-openjdk java-1.8.0-openjdk-devel net-tools \
+	&& yum install -y python python36 python36-devel.x86_64 java-1.8.0-openjdk java-1.8.0-openjdk-devel net-tools \
+	&& yum -y groupinstall "Development Tools" \
+	&& yum -y install gcc openssl-devel bzip2-devel libffi-devel \
 	&& yum clean all
 
 RUN groupadd hadoop && \

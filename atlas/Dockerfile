@@ -1,6 +1,6 @@
 FROM maven:3.5.4-jdk-8 AS stage-atlas
 
-ENV	MAVEN_OPTS "-Xms2g -Xmx2g"
+ENV	MAVEN_OPTS "-Xms2g -Xmx2g -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true"
 ENV ATLAS_REV "21b15842fd74bc91910b2d8901dbea57769065d0"
 
 RUN git clone http://github.com/apache/atlas.git \

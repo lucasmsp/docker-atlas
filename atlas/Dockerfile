@@ -14,7 +14,8 @@ FROM centos:7
 COPY --from=stage-atlas /apache-atlas.tar.gz /apache-atlas.tar.gz
 
 RUN yum update -y \
-	&& yum install -y python python36 java-1.8.0-openjdk java-1.8.0-openjdk-devel net-tools \
+	&& yum install -y python python36 python36-devel.x86_64 java-1.8.0-openjdk java-1.8.0-openjdk-devel net-tools \
+
 	&& yum clean all
 
 RUN groupadd hadoop && \

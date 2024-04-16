@@ -9,7 +9,7 @@ This cluster in docker contains Apache Atlas (and its dependencies) with a minim
 * Kafka and Zookeeper (Atlas also depends on them);
 * HDFS 2.7;
 * Hive 2.3.2;
-* Spark 2.4.
+* Spark 3.3.
 
 ### Quickstart
 
@@ -59,7 +59,6 @@ insert into branchb(full_name,ssn,location) values ('andrew', '999-999-999', 'ta
 insert into branchb(full_name,ssn,location) values ('ryan', '111-222-333', 'chicago'); 
 insert into branchb(full_name,ssn,location) values ('brad', '444-555-666', 'minneapolis');
 create table branch_intersect as select b1.full_name,b1.ssn,b1.location from brancha b1 inner join branchb b2 ON b1.ssn = b2.ssn;
-
 ```
 
 #### Testing Spark

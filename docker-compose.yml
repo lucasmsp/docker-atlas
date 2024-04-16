@@ -1,9 +1,11 @@
-version: "2"
+version: "3.4"
 services:
 
   atlas-server:
-    build: ./atlas
-    image: wbaa/rokku-dev-apache-atlas
+    build: 
+      context: ./atlas
+      network: host
+    image: lucasmsp/atlas:2.3
     volumes:
       - ./atlas/resources/1000-Hadoop:/opt/atlas/models/1000-Hadoop
     ports:
@@ -33,8 +35,10 @@ services:
       - zookeeper  
   
   spark:
-    build: ./spark
-    image: lucasmsp/spark:2.4
+    build: 
+      context: ./spark
+      network: host
+    image: lucasmsp/spark:3.3
     command: /bin/bash
     tty: true
     volumes:

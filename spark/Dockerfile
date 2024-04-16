@@ -2,11 +2,6 @@ FROM ubuntu:22.04 as base
 
 LABEL maintainer="Lucas Miguel Ponce <lucasmsp@dcc.ufmg.br>"
 
-ENV SPARK_HOME /usr/local/spark
-
-ENV PYTHONPATH $PYTHONPATH:$SPARK_HOME/python:${SPARK_HOME}/python/lib/pyspark.zip:${SPARK_HOME}/python/lib/py4j-*.zip
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV PATH="${PATH}:${JAVA_HOME}"
 ENV TERM=xterm\
     TZ=America/Sao_Paulo\
     DEBIAN_FRONTEND=noninteractive
@@ -19,19 +14,16 @@ RUN apt update && apt install -y \
       python3-setuptools \
       openjdk-8-jdk \
       curl \
-      graphviz \
-      locales \
-  && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-  && locale-gen \
-  && update-locale LANG=en_US.UTF-8 \
-  && echo "LANG=en_US.UTF-8" >> /etc/default/locale \
-  && echo "LANGUAGE=en_US.UTF-8" >> /etc/default/locale \
-  && echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale \
   && rm -rf /var/lib/apt/lists/*
 
-ENV SPARK_VERSION=3.3
+ENV SPARK_VERSION=3.4
 ENV HADOOP_VERSION=3
 ENV SPARK_BASE_URL=https://downloads.apache.org/spark/
+
+ENV SPARK_HOME /usr/local/spark
+ENV PYTHONPATH $PYTHONPATH:$SPARK_HOME/python:${SPARK_HOME}/python/lib/pyspark.zip:${SPARK_HOME}/python/lib/py4j-*.zip
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV PATH="${PATH}:${JAVA_HOME}"
 
 # Get latest spark based on major.minor version
 RUN SPARK_LATEST_VERSION=$(\
@@ -44,10 +36,6 @@ RUN SPARK_LATEST_VERSION=$(\
   && curl -sL ${SPARK_HADOOP_URL} | tar -xz -C /usr/local/  &&\
     mv /usr/local/$SPARK_HADOOP_PKG $SPARK_HOME &&\
     ln -s /usr/local/spark /opt/spark
-
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
 
 COPY ./entrypoint.sh /opt/
 ENTRYPOINT [ "/opt/entrypoint.sh" ]

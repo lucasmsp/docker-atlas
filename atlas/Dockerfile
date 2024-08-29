@@ -17,6 +17,10 @@ FROM centos:7
 
 COPY --from=stage-atlas /apache-atlas.tar.gz /apache-atlas.tar.gz
 
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
+	&& sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo \
+	&& sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
 RUN yum update -y \
 	&& yum install -y python python36 python36-devel java-1.8.0-openjdk java-1.8.0-openjdk-devel net-tools \
 	&& yum -y groupinstall "Development Tools" \

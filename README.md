@@ -9,7 +9,7 @@ This cluster in docker contains Apache Atlas (and its dependencies) with a minim
 * Kafka and Zookeeper (Atlas also depends on them);
 * HDFS 2.7;
 * Hive 2.3.2;
-* Spark 3.3.
+* Spark 3.4.
 
 ### Quickstart
 

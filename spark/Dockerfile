@@ -18,7 +18,7 @@ RUN apt update && apt install -y \
 
 ENV SPARK_VERSION=3.4
 ENV HADOOP_VERSION=3
-ENV SPARK_BASE_URL=https://downloads.apache.org/spark/
+ENV SPARK_BASE_URL=https://archive.apache.org/dist/spark/
 
 ENV SPARK_HOME /usr/local/spark
 ENV PYTHONPATH $PYTHONPATH:$SPARK_HOME/python:${SPARK_HOME}/python/lib/pyspark.zip:${SPARK_HOME}/python/lib/py4j-*.zip
